@@ -65,7 +65,7 @@ abstract class ReteIOModel extends DOMWidgetModel {
       ...super.defaults(),
       key: undefined,
       title: undefined,
-      multi_connection: undefined,
+      multi_connection: false,
       socket_type: undefined,
       _model_name: ReteIOModel.model_name,
       _model_module: ReteIOModel.model_module,
@@ -87,7 +87,7 @@ abstract class ReteIOModel extends DOMWidgetModel {
 
   key: string;
   title: string;
-  multi_connection:boolean;
+  multi_connection: boolean;
   socket_type: string;
   sockets: ReteSocketCollectionModel;
   static model_name = 'ReteIOModel';

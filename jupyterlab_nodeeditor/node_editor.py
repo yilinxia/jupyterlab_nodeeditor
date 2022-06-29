@@ -88,7 +88,7 @@ class Component(ipywidgets.Widget):
     _model_module_version = traitlets.Unicode(EXTENSION_VERSION).tag(sync=True)
     title = traitlets.Unicode("Title").tag(sync=True)
     # We distinguish between name and title because one is displayed on all
-    # instances and the other is the name of the component type
+    # Instances and the other is the name of the component type
     type_name = traitlets.Unicode().tag(sync=True)
     sockets = traitlets.Instance(SocketCollection).tag(
         sync=True, **ipywidgets.widget_serialization
