@@ -1,14 +1,21 @@
 
-{
+  {
+  "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "declarationDir": "lib",
+    "noImplicitThis": false,
     "target": "es5",
     "module": "es2015",
     "sourceMap": true,
     "declaration": true,
     "importHelpers": true,
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./src/localtypes"
+    ],
   "include": ["src/**/*.ts", "src/**/*.vue"]
 }

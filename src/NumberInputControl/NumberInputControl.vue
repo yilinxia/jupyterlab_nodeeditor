@@ -1,65 +1,53 @@
-<template>
-    <input :type="type || 'text'" :readonly="readonly" :value="value" @input="onChange($event)" @mousedown.stop />
-</template>
-
-<script setup >
-const props = defineProps<{
-    initial: number,
-    readonly: boolean,
-    emitter: any,
-    ikey: string,
-    type: string,
-    change?: (value: number | string) => void,
-    getData?: (ikey: string) => number,
-    putData?: (ikey: string, value: number | string) => void
-}>();
-
-</script>
-
-<script>
+<script setup lang="ts">
+import type * as Rete from "rete";
+import type { EventsTypes } from "rete/types/events";
 import { defineComponent } from "vue";
 
-export default NumberInputControl = defineComponent({
+export interface Props {
+  initialValue: number;
+  ikey: string;
+  reteEmitter?: Rete.Emitter<EventsTypes> | undefined;
+  reteGetData?: (ikey: string) => number;
+  retePutData?: (ikey: string, value: number) => void;
+}
 
-    data(): { value: number } {
-        return {
-            value: this.initial || 0,
-        }
-    },
-    methods: {
-        parse(value: any): number {
-            return this.type === 'number' ? +value : value;
-        },
-        onChange(e: InputEvent) {
-            const target = <HTMLInputElement>e.target;
-            this.value = this.parse(target);
-            this.update();
-        },
-        update() {
-            if (this.ikey) {
-                this.putData(this.ikey, this.value)
-                this.change(this.value);
-            }
-            this.emitter.trigger('process');
-        }
-    },
-    mounted() {
-        this.value = this.getData(this.ikey);
-    },
-    initial: 0,
-    type: 'number',
-    value: 0
+const props = withDefaults(defineProps<Props>(), {
+  reteGetData: (ikey: string) => 0,
+  retePutData: (ikey: string, value: number) => {
+    return;
+  },
+  reteEmitter: undefined,
 });
+
+const emits = defineEmits([]);
 </script>
 
-
-<style lang="sass" scoped>
-input
-  width: 100%
-  border-radius: 30px
-  background-color: white
-  padding: 2px 6px
-  border: 1px solid #999
-  font-size: 110%
-  width: 170px
-</style>
+<script lang="ts">
+export default defineComponent({
+  data() {
+    return {
+      currentValue: this.initialValue === undefined ? 0 : this.initialValue,
+    };
+  },
+  methods: {
+    change(e: Event) {
+      this.currentValue = +(e.target as HTMLInputElement).value;
+      this.update();
+    },
+    update() {
+      if (this.ikey) {
+        this.retePutData?.(this.ikey, this.currentValue);
+      }
+      this.reteEmitter?.trigger("process");
+    },
+    mounted() {
+      this.currentValue = 0;
+      if (this.ikey && this.reteGetData)
+        this.currentValue = this.reteGetData(this.ikey);
+    },
+  },
+});
+</script>
+<template>
+  <input type="number" @input="change($event)" @mousedown.stop />
+</template>
