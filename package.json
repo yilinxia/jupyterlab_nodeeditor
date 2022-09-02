@@ -2,14 +2,22 @@
   "name": "nodeeditor-controls",
   "version": "1.0.0",
   "description": "VueJS controls for jupyterlab-nodeeditor",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c"
   },
   "author": "Matthew Turk",
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@vue/compiler-sfc": "^3.2.38",
+    "rollup": "^2.79.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.33.0",
+    "rollup-plugin-vue": "^6.0.0",
+    "typescript": "^4.8.2",
     "vue": "^2.7.10",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",
