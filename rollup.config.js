@@ -14,13 +14,16 @@ export default {
       format: "cjs",
       file: packageJson.main,
       sourcemap: true,
+      globals: {'vue': 'Vue'}
     },
     {
       format: "esm",
       file: packageJson.module,
       sourcemap: true,
+      globals: {'vue': 'Vue'}
     },
   ],
+  external: ['vue'],
   plugins: [
     peerDepsExternal(),
     resolve(),

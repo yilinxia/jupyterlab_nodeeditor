@@ -4,7 +4,6 @@ import type { EventsTypes } from "rete/types/events";
 import { defineComponent } from "vue";
 
 export interface Props {
-  initialValue: string;
   ikey: string;
   reteEmitter?: Rete.Emitter<EventsTypes> | undefined;
   reteGetData?: (ikey: string) => number;
@@ -26,8 +25,8 @@ const emits = defineEmits([]);
 export default defineComponent({
   data() {
     return {
-      currentValue: "x_dimension",
-      dimensions: [
+      currentValue: undefined,
+      options: [
         { text: "i_dimension", value: "i_dimension" },
         { text: "j_dimension", value: "j_dimension" },
         { text: "k_dimension", value: "k_dimension" },
@@ -36,7 +35,6 @@ export default defineComponent({
   },
   methods: {
     change(e: Event) {
-      this.currentValue = (e.target as HTMLSelectElement).value;
       this.update();
     },
     update() {
@@ -46,7 +44,7 @@ export default defineComponent({
       this.reteEmitter?.trigger("process");
     },
     mounted() {
-      this.currentValue = "x_dimension";
+      this.currentValue = this.options[0];
       if (this.ikey && this.reteGetData)
         this.currentValue = this.reteGetData(this.ikey);
     },
@@ -56,7 +54,8 @@ export default defineComponent({
 
 <template>
   <select v-model="currentValue" @input="change($event)">
-    <option v-for="option in dimensions" :value="option.value">
+    <option>Hi</option>
+    <option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.text }}
     </option>
   </select>
