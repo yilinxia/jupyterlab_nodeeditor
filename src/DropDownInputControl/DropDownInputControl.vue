@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type * as Rete from "rete";
 import type { EventsTypes } from "rete/types/events";
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
+import { defineComponent } from "vue";
 
 export interface Props {
   initialValue: string;
@@ -24,11 +23,15 @@ const emits = defineEmits([]);
 </script>
 
 <script lang="ts">
-export default {
+export default defineComponent({
   data() {
     return {
-      currentValue: this.initialValue === undefined ? 0 : this.initialValue,
-      dimensions: ["x_dimension", "y_dimension", "z_dimension"],
+      currentValue: "x_dimension",
+      dimensions: [
+        { text: "i_dimension", value: "i_dimension" },
+        { text: "j_dimension", value: "j_dimension" },
+        { text: "k_dimension", value: "k_dimension" },
+      ],
     };
   },
   methods: {
@@ -43,14 +46,18 @@ export default {
       this.reteEmitter?.trigger("process");
     },
     mounted() {
-      this.currentValue = "";
+      this.currentValue = "x_dimension";
       if (this.ikey && this.reteGetData)
         this.currentValue = this.reteGetData(this.ikey);
     },
   },
-};
+});
 </script>
 
 <template>
-  <v-select :options="dimensions" @input="change($event)" />
+  <select v-model="currentValue" @input="change($event)">
+    <option v-for="option in dimensions" :value="option.value">
+      {{ option.text }}
+    </option>
+  </select>
 </template>
