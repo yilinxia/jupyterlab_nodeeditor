@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import type * as Rete from "rete";
 import type { EventsTypes } from "rete/types/events";
-import { defineComponent } from "vue";
 import vSelect from "vue-select";
-// import "vue-select/dist/vue-select.css";
-// Vue.component("v-select", vSelect);
-
+import "vue-select/dist/vue-select.css";
 
 export interface Props {
   initialValue: string;
@@ -21,14 +18,13 @@ const props = withDefaults(defineProps<Props>(), {
     return;
   },
   reteEmitter: undefined,
-
 });
 
 const emits = defineEmits([]);
 </script>
 
 <script lang="ts">
-export default defineComponent({
+export default {
   data() {
     return {
       currentValue: this.initialValue === undefined ? 0 : this.initialValue,
@@ -37,7 +33,7 @@ export default defineComponent({
   },
   methods: {
     change(e: Event) {
-      this.currentValue = +(e.target as HTMLInputElement).value;
+      this.currentValue = (e.target as HTMLSelectElement).value;
       this.update();
     },
     update() {
@@ -52,9 +48,9 @@ export default defineComponent({
         this.currentValue = this.reteGetData(this.ikey);
     },
   },
-});
+};
 </script>
 
 <template>
-  <v-select :options="dimensions" />
+  <v-select :options="dimensions" @input="change($event)" />
 </template>
