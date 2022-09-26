@@ -5,12 +5,18 @@ import { defineComponent } from "vue";
 
 export interface Props {
   ikey: string;
+  options?: { text: string; value: string }[];
   reteEmitter?: Rete.Emitter<EventsTypes> | undefined;
   reteGetData?: (ikey: string) => number;
   retePutData?: (ikey: string, value: number) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  options: () => [
+    { text: "x_dimension", value: "x_dimension" },
+    { text: "y_dimension", value: "y_dimension" },
+    { text: "z_dimension", value: "z_dimension" },
+  ],
   reteGetData: (ikey: string) => 0,
   retePutData: (ikey: string, value: number) => {
     return;
@@ -26,11 +32,6 @@ export default defineComponent({
   data() {
     return {
       currentValue: undefined,
-      options: [
-        { text: "i_dimension", value: "i_dimension" },
-        { text: "j_dimension", value: "j_dimension" },
-        { text: "k_dimension", value: "k_dimension" },
-      ],
     };
   },
   methods: {
@@ -54,7 +55,6 @@ export default defineComponent({
 
 <template>
   <select v-model="currentValue" @input="change($event)">
-    <option>Hi</option>
     <option v-for="option in options" :key="option.value" :value="option.value">
       {{ option.text }}
     </option>
