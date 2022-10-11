@@ -4,7 +4,7 @@ import type { EventsTypes } from "rete/types/events";
 import { defineComponent } from "vue";
 
 export interface Props {
-  initialValue: number;
+  initialValue: string;
   ikey: string;
   reteEmitter?: Rete.Emitter<EventsTypes> | undefined;
   reteGetData?: (ikey: string) => number;
@@ -41,7 +41,7 @@ export default defineComponent({
       this.reteEmitter?.trigger("process");
     },
     mounted() {
-      this.currentValue = 0;
+      this.currentValue = "";
       if (this.ikey && this.reteGetData)
         this.currentValue = this.reteGetData(this.ikey);
     },
@@ -49,10 +49,5 @@ export default defineComponent({
 });
 </script>
 <template>
-  <input
-    type="number"
-    @input="change($event)"
-    @mousedown.stop
-    v-model="currentValue"
-  />
+  <input type="string" @input="change($event)" @mousedown.stop />
 </template>
