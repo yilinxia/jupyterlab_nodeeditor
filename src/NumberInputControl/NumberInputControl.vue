@@ -49,5 +49,10 @@ export default defineComponent({
 });
 </script>
 <template>
-  <input type="number" @input="change($event)" @mousedown.stop />
+  <input
+    type="number"
+    @input="change($event)"
+    @mousedown.stop
+    v-model="currentValue"
+  />
 </template>
